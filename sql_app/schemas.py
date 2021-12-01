@@ -7,12 +7,12 @@ class MemberBase(BaseModel):
     firstname: str
     lastname: str
     address: str
-    membership_expiration: date
+#    membership_expiration: date
     remaining_punches: int
 
 
 class MemberCreate(MemberBase):
-    print("fugk")
+    print("creating")
     pass
 
 

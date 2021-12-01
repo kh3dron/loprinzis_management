@@ -1,15 +1,35 @@
 <html>
 
 <script>
+    // Example POST method implementation:
+    async function postData(url = '', data = {}) {
+        // Default options are marked with *
+        const response = await fetch(url, {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            body: JSON.stringify(data) // body data type must match "Content-Type" header
+        });
+        return response.json(); // parses JSON response into native JavaScript objects
+    }
+
     function create_member() {
 
         var elements = document.getElementById("form1").elements;
-        var obj ={};
-        for(var i = 0 ; i < elements.length-1 ; i++){
+        var obj = {};
+        obj["id"] = 1;
+        for (var i = 0; i < elements.length - 1; i++) {
             var item = elements.item(i);
             obj[item.name] = item.value;
         }
-
+        obj["remaining_punches"] = parseInt(obj["remaining_punches"]);
         var req = new XMLHttpRequest();
         var result = document.getElementById('result');
         req.onreadystatechange = function () {
@@ -20,10 +40,11 @@
             }
         }
         console.log("Sending:")
-        req.open('POST', '/create_member/', true);
-        //req.setRequestHeader('content-type', 'application/x-www-form-urlencoded');
-        console.log(JSON.stringify(obj))
-        req.send(JSON.stringify(obj));
+
+        postData("/create_member/", obj)
+            .then(data => {
+                console.log(data)
+            })
 
     }
 </script>
@@ -46,12 +67,14 @@
         <input type="text" id="lastname" name="lastname"><br>
         <label for="name">Address:</label><br>
         <input type="text" id="address" name="address"><br>
-        <label for="name">Membership Expiration:</label><br>
-        <input type="text" id="membership_epiration" name="membership_expiration"><br>
+        <!--
+            <label for="name">Membership Expiration:</label><br>
+            <input type="text" id="membership_epiration" name="membership_expiration"><br>
+        -->
         <label for="name">Punches:</label><br>
         <input type="text" id="remaining_punches" name="remaining_punches"><br>
     </form>
-    <button form="form1" value="Submit" onclick="create_member()">Register</button>
+    <button form="form1" type="sumbit" onclick="create_member()">Register</button>
     <h3 id="result"></h3>
 
 

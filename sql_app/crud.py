@@ -17,7 +17,7 @@ def get_members(db: Session, skip: int = 0, limit: int = 100):
 
 def create_member(db: Session, member: schemas.MemberCreate):
     db_member = models.Member(firstname=member.firstname, lastname=member.lastname, address=member.address,
-                            membership_expiration=member.membership_expiration, remaining_punches=member.remaining_punches)
+                            remaining_punches=member.remaining_punches)
     db.add(db_member)
     db.commit()
     db.refresh(db_member)

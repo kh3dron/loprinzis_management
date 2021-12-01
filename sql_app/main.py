@@ -38,14 +38,14 @@ async def sample(request: Request, skip: int = 0, limit: int = 100, db: Session 
     #grabs all of the members table
     members = crud.get_members(db, skip=skip, limit=limit)
     members = [str(e) for e in members]
+    members= "\n".join(members)
     return templates.TemplateResponse("./welcome.html", {"request": request, "members":members})
 
 @app.post("/create_member/")
 def create_member(member: schemas.MemberCreate, db: Session = Depends(get_db)):
     print("Here!!!")
-    db_member = crud.get_member_by_firstname(db, firstname=member.firstname)
-    if db_member:
-        raise HTTPException(status_code=400, detail="Member already registered")
+
+
     return crud.create_member(db=db, member=member)
 
 

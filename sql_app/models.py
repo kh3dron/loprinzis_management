@@ -10,9 +10,9 @@ class Member(Base):
     firstname = Column(String, index=True)
     lastname = Column(String, index=True)
     address = Column(String, index=True)
-    membership_expiration = Column(Date, index=True)
+    #membership_expiration = Column(Date, index=True)
     remaining_punches = Column(Integer, index=True)
 
 
     def __str__(self):
-        return str([self.id, self.firstname, self.lastname, self.address, self.membership_expiration, self.remaining_punches])
+        return str([self.id, self.firstname, self.lastname, self.address, self.remaining_punches])
