@@ -1,37 +1,23 @@
 from typing import List, Optional
-
+from datetime import date, datetime, time, timedelta
 from pydantic import BaseModel
 
 
-class ItemBase(BaseModel):
-    title: str
-    description: Optional[str] = None
+class MemberBase(BaseModel):
+    firstname: str
+    lastname: str
+    address: str
+    membership_expiration: date
+    remaining_punches: int
 
 
-class ItemCreate(ItemBase):
+class MemberCreate(MemberBase):
+    print("fugk")
     pass
 
 
-class Item(ItemBase):
+class Member(MemberBase):
     id: int
-    owner_id: int
-
-    class Config:
-        orm_mode = True
-
-
-class UserBase(BaseModel):
-    email: str
-
-
-class UserCreate(UserBase):
-    password: str
-
-
-class User(UserBase):
-    id: int
-    is_active: bool
-    items: List[Item] = []
 
     class Config:
         orm_mode = True
