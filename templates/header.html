@@ -1,4 +1,3 @@
-<html>
 <script>
     // Example POST method implementation:
     async function postData(url = '', data = {}) {
@@ -36,19 +35,31 @@
             })
 
     }
+
+    function checkin_member(){
+        var elements = document.getElementById("checkin").elements;
+        console.log("Elements!")
+        console.log(elements)
+        var obj = {};
+        obj["name"] = (elements["name"].value)
+        console.log("Read it!")
+        console.log(obj)
+
+        postData("/create_visit/", obj)
+            .then(data => {
+                console.log(data)
+            })
+
+    }
+
 </script>
 
-<body>
-    {% include "header.html" %}
 
-    <h3>List of Members</h3>
+<h1> Loprinzi's Member Manager</h1>
 
-    <ul id="navigation">
-            {% for item in members %}
-                <li>"{{item}}"</li>
-            {% endfor %}
-    </ul>
+<a href="/"><button>Home</button></a>
+<a href="/register"><button>Register a new member</button></a>
+<a href="/today"><button>Daily Management</button></a>
+<br>
+<hr>
 
-</body>
-
-</html>

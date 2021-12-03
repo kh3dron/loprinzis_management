@@ -26,27 +26,41 @@ def get_db():
 @app.get("/dump/")
 def read_members(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     mems = crud.get_members(db, skip=skip, limit=limit)
-
     #this goes line by line
-    print(type(mems))
     return mems
 
 
-@app.get("/sample", response_class=HTMLResponse)
+@app.get("/", response_class=HTMLResponse)
+async def sample(request: Request, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    members = crud.get_members(db, skip=skip, limit=limit)
+    members = [e.aslist() for e in members]
+    return templates.TemplateResponse("./welcome.html", {"request": request, "members":members})
+
+@app.get("/register", response_class=HTMLResponse)
+async def sample(request: Request, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    return templates.TemplateResponse("./register.html", {"request": request})
+
+@app.get("/today", response_class=HTMLResponse)
 async def sample(request: Request, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     
-    #grabs all of the members table
-    members = crud.get_members(db, skip=skip, limit=limit)
-    members = [str(e) for e in members]
-    members= "\n".join(members)
-    return templates.TemplateResponse("./welcome.html", {"request": request, "members":members})
+    visits = [e.aslist() for e in crud.get_visits(db, skip=skip, limit=limit)]
+
+    return templates.TemplateResponse("./today.html", {"request": request, "visits":visits})
+
 
 @app.post("/create_member/")
 def create_member(member: schemas.MemberCreate, db: Session = Depends(get_db)):
-    print("Here!!!")
-
-
     return crud.create_member(db=db, member=member)
+
+@app.post("/create_visit/")
+def create_visit(visit: schemas.VisitCreate, db: Session = Depends(get_db)):
+    print("Here!")
+    db_member = crud.get_member_by_name(db, name=visit.name)
+    if db_member is None:
+        raise HTTPException(status_code=404, detail="Member not found")
+
+    return crud.create_visit(db=db, visit=visit)
+
 
 
 @app.get("/members/", response_model=List[schemas.Member])

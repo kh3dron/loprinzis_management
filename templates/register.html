@@ -1,0 +1,22 @@
+<html>
+<body>
+    {% include "header.html" %}
+    
+
+    <h3>New Member Registration</h3>
+    <form id=form1>
+        <label for="name">First name:</label><br>
+        <input type="text" id="name" name="name"><br>
+        <label for="name">Address:</label><br>
+        <input type="text" id="address" name="address"><br>
+        <!--
+            <label for="name">Membership Expiration:</label><br>
+            <input type="text" id="membership_epiration" name="membership_expiration"><br>
+        -->
+        <label for="name">Punches:</label><br>
+        <input type="text" id="remaining_punches" name="remaining_punches"><br>
+    </form>
+    <button form="form1" type="sumbit" onclick="create_member()">Register</button>
+    <h3 id="result"></h3>
+</body>
+</html>

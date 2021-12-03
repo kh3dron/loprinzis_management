@@ -4,15 +4,13 @@ from pydantic import BaseModel
 
 
 class MemberBase(BaseModel):
-    firstname: str
-    lastname: str
+    name: str
     address: str
 #    membership_expiration: date
     remaining_punches: int
 
 
 class MemberCreate(MemberBase):
-    print("creating")
     pass
 
 
@@ -21,3 +19,14 @@ class Member(MemberBase):
 
     class Config:
         orm_mode = True
+
+
+class VisitBase(BaseModel):
+    member_id: int
+    name: str
+    timein: datetime
+    timeout: datetime
+
+class VisitCreate(VisitBase):
+    pass
+

@@ -1,0 +1,21 @@
+<body>
+    {% include "header.html" %}
+
+    <h3>Check a member in:</h3>
+
+    <form id=checkin>
+        <label for="name">Member Name:</label><br>
+        <input type="text" id="name" name="name"><br>
+    </form>
+    <button form="checkin" type="sumbit" onclick="checkin_member()">Check in</button>
+
+    <hr>
+    <h3>Currently Checked In: </h3>
+
+    <ul id="navigation">
+        {% for item in visits %}
+        <li><button>Check Out</button>"{{item}}"</li>
+        {% endfor %}
+    </ul>
+
+</body>
