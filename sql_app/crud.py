@@ -24,7 +24,7 @@ def create_member(db: Session, member: schemas.MemberCreate):
     return db_member
 
 def create_visit(db: Session, visit: schemas.VisitCreate):
-    db_visit = models.Visit(member_id=visit.member_id, timein=visit.timein, timeout=visit.timeout)
+    db_visit = models.Visit(member_id=visit.member_id, name=visit.name, timein=visit.timein, timeout=None)
     db.add(db_visit)
     db.commit()
     db.refresh(db_visit)

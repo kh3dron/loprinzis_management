@@ -38,14 +38,24 @@
 
     function checkin_member(){
         var elements = document.getElementById("checkin").elements;
-        console.log("Elements!")
-        console.log(elements)
         var obj = {};
+        obj["member_id"] = 1
         obj["name"] = (elements["name"].value)
-        console.log("Read it!")
-        console.log(obj)
+        obj["timein"] = Date.now()
+        obj["timeout"] = 0
 
         postData("/create_visit/", obj)
+            .then(data => {
+                console.log(data)
+            })
+
+    }
+
+    function checkout_member(visit){
+        visit["timeout"] = Date.now()
+        console.log("check this out")
+        console.log(visit)
+        postData("/checkout/", visit)
             .then(data => {
                 console.log(data)
             })

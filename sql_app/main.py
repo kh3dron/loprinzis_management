@@ -43,9 +43,11 @@ async def sample(request: Request, skip: int = 0, limit: int = 100, db: Session 
 @app.get("/today", response_class=HTMLResponse)
 async def sample(request: Request, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     
-    visits = [e.aslist() for e in crud.get_visits(db, skip=skip, limit=limit)]
+    v = [e.curstr() for e in crud.get_visits(db, skip=skip, limit=limit)]
+    h = [e.histstr() for e in crud.get_visits(db, skip=skip, limit=limit)]
 
-    return templates.TemplateResponse("./today.html", {"request": request, "visits":visits})
+
+    return templates.TemplateResponse("./today.html", {"request": request, "visits":v, "hist":h})
 
 
 @app.post("/create_member/")
@@ -54,14 +56,17 @@ def create_member(member: schemas.MemberCreate, db: Session = Depends(get_db)):
 
 @app.post("/create_visit/")
 def create_visit(visit: schemas.VisitCreate, db: Session = Depends(get_db)):
-    print("Here!")
-    db_member = crud.get_member_by_name(db, name=visit.name)
+    db_member = (crud.get_member_by_name(db, name=visit.name)).aslist()
     if db_member is None:
-        raise HTTPException(status_code=404, detail="Member not found")
-
+        raise HTTPException(status_code=200, detail="Member not found")
+    visit.name = db_member[1]
+    print(visit)
     return crud.create_visit(db=db, visit=visit)
 
-
+@app.post("/checkout/")
+def create_visit(visit: schemas.VisitCreate, db: Session = Depends(get_db)):
+    print("Checking out!")
+    #return crud.create_visit(db=db, visit=visit)
 
 @app.get("/members/", response_model=List[schemas.Member])
 def read_members(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):

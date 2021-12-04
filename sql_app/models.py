@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 import json
 from .database import Base
 import time
+import datetime
   
 class Member(Base):
     __tablename__ = "members"
@@ -29,8 +30,8 @@ class Visit(Base):
     id = Column(Integer, primary_key=True, index=True)
     member_id = Column(Integer, ForeignKey("members.id"))
     name = Column(String, index=True)
-    timein = Column(DateTime, index=True)
-    timeout = Column(DateTime, index=True)
+    timein = Column(Integer, index=True)
+    timeout = Column(Integer, index=True)
 
     member = relationship("Member", back_populates="visits")
 
@@ -38,4 +39,22 @@ class Visit(Base):
         return str([self.id, self.member_id, self.timein, self.timeout])
 
     def aslist(self):
-        return [self.id, self.member_id, self.name, self.timein.strftime("%c"), self.timeout.strftime("%c")]
+        t_in = datetime.datetime.fromtimestamp(int(self.timein) / 1e3)
+        if self.timeout:
+            t_out = datetime.datetime.fromtimestamp(int(self.timeout) / 1e3)
+
+        return [self.id, self.member_id, self.name, str(t_in), str(t_out)]
+
+    #current string form
+    def curstr(self):
+        t_in = datetime.datetime.fromtimestamp(int(self.timein) / 1e3).strftime("%X")
+
+        return self.name + " came in at " + str(t_in)
+
+    #historic string form
+    def histstr(self):
+        t_in = datetime.datetime.fromtimestamp(int(self.timein) / 1e3)
+        if self.timeout:
+            t_out = datetime.datetime.fromtimestamp(int(self.timeout) / 1e3)
+            return self.name + " came at " + str(t_in) + " and left at " + str(t_out)
+        return

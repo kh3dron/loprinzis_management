@@ -14,8 +14,19 @@
 
     <ul id="navigation">
         {% for item in visits %}
-        <li><button>Check Out</button>"{{item}}"</li>
+
+        <li><button onclick="checkout_member('{{item}}')">Check Out</button>{{item}}</li>
         {% endfor %}
     </ul>
+
+    <hr>
+    <h3>Today's History: </h3>
+
+    <ul id="navigation">
+        {% for item in hist %}
+        <li>{{item}}</li>
+        {% endfor %}
+    </ul>
+
 
 </body>

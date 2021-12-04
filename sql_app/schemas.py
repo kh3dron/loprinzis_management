@@ -24,8 +24,8 @@ class Member(MemberBase):
 class VisitBase(BaseModel):
     member_id: int
     name: str
-    timein: datetime
-    timeout: datetime
+    timein: int
+    timeout: int
 
 class VisitCreate(VisitBase):
     pass
