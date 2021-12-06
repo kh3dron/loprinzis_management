@@ -23,6 +23,9 @@ class Member(Base):
     def aslist(self):
         return [self.id, self.name, self.address, self.remaining_punches]
 
+    def homestr(self):
+        return self.name + " | Address: " + self.address + " | Remaining punches: " + str(self.remaining_punches)
+
 
 class Visit(Base):
     __tablename__ = "visits"
@@ -35,6 +38,8 @@ class Visit(Base):
 
     member = relationship("Member", back_populates="visits")
 
+
+
     def __str__(self):
         return str([self.id, self.member_id, self.timein, self.timeout])
 
@@ -42,19 +47,21 @@ class Visit(Base):
         t_in = datetime.datetime.fromtimestamp(int(self.timein) / 1e3)
         if self.timeout:
             t_out = datetime.datetime.fromtimestamp(int(self.timeout) / 1e3)
-
+        else:
+            t_out = 0
+        #TODO: this memberID isn't populating
         return [self.id, self.member_id, self.name, str(t_in), str(t_out)]
 
     #current string form
     def curstr(self):
         t_in = datetime.datetime.fromtimestamp(int(self.timein) / 1e3).strftime("%X")
 
-        return self.name + " came in at " + str(t_in)
+        return  self.name + " came in at " + str(t_in)
 
     #historic string form
     def histstr(self):
-        t_in = datetime.datetime.fromtimestamp(int(self.timein) / 1e3)
+        t_in = datetime.datetime.fromtimestamp(int(self.timein) / 1e3).strftime("%X")
         if self.timeout:
-            t_out = datetime.datetime.fromtimestamp(int(self.timeout) / 1e3)
+            t_out = datetime.datetime.fromtimestamp(int(self.timeout) / 1e3).strftime("%X")
             return self.name + " came at " + str(t_in) + " and left at " + str(t_out)
         return

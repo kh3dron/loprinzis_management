@@ -30,3 +30,5 @@ class VisitBase(BaseModel):
 class VisitCreate(VisitBase):
     pass
 
+class Checkout(BaseModel):
+    member_id: int

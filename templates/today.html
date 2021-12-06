@@ -13,17 +13,17 @@
     <h3>Currently Checked In: </h3>
 
     <ul id="navigation">
-        {% for item in visits %}
-
-        <li><button onclick="checkout_member('{{item}}')">Check Out</button>{{item}}</li>
-        {% endfor %}
+            {% for item in curSTR %}
+                <li><button onclick="checkout_member('{{curOBJ[loop.index-1][1]}}')">Check Out</button>{{item}}</li>
+                <li>{{curOBJ[loop.index-1][1]}}</li>
+            {% endfor %}
     </ul>
 
     <hr>
     <h3>Today's History: </h3>
 
     <ul id="navigation">
-        {% for item in hist %}
+        {% for item in hstSTR %}
         <li>{{item}}</li>
         {% endfor %}
     </ul>

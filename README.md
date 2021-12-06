@@ -28,8 +28,12 @@ automation for gym member checkin
   - visit creation button fails if user doesn't exist
   - pretty printing for current checkins
   - history section to show checkins who have checked out
-
-
+## [0.4]
+- more prettyprinting features for UI
+- pass in query objects instead of strings to daily page
+- added /visit and /vitis/{visit_id} helper endpoints
+- CRUD method to upsate visits with checkout 
+- checkin / checkout buttons work
 
 
 [todo] remove none printing on history list

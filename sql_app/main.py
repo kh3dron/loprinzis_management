@@ -23,17 +23,10 @@ def get_db():
     finally:
         db.close()
 
-@app.get("/dump/")
-def read_members(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    mems = crud.get_members(db, skip=skip, limit=limit)
-    #this goes line by line
-    return mems
-
-
 @app.get("/", response_class=HTMLResponse)
 async def sample(request: Request, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     members = crud.get_members(db, skip=skip, limit=limit)
-    members = [e.aslist() for e in members]
+    members = [e.homestr() for e in members]
     return templates.TemplateResponse("./welcome.html", {"request": request, "members":members})
 
 @app.get("/register", response_class=HTMLResponse)
@@ -43,12 +36,12 @@ async def sample(request: Request, skip: int = 0, limit: int = 100, db: Session 
 @app.get("/today", response_class=HTMLResponse)
 async def sample(request: Request, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     
-    v = [e.curstr() for e in crud.get_visits(db, skip=skip, limit=limit)]
-    h = [e.histstr() for e in crud.get_visits(db, skip=skip, limit=limit)]
+    #v = [e.curstr() for e in crud.get_visits(db, skip=skip, limit=limit)]
+    curSTR = [e.curstr() for e in crud.get_current_visitors(db, skip=skip, limit=limit)]
+    curOBJ = [e.aslist() for e in crud.get_current_visitors(db, skip=skip, limit=limit)]
+    hstSTR = [e.histstr() for e in crud.get_past_visitors(db, skip=skip, limit=limit)]
 
-
-    return templates.TemplateResponse("./today.html", {"request": request, "visits":v, "hist":h})
-
+    return templates.TemplateResponse("./today.html", {"request": request, "curSTR":curSTR, "curOBJ":curOBJ, "hstSTR":hstSTR})
 
 @app.post("/create_member/")
 def create_member(member: schemas.MemberCreate, db: Session = Depends(get_db)):
@@ -63,16 +56,22 @@ def create_visit(visit: schemas.VisitCreate, db: Session = Depends(get_db)):
     print(visit)
     return crud.create_visit(db=db, visit=visit)
 
-@app.post("/checkout/")
-def create_visit(visit: schemas.VisitCreate, db: Session = Depends(get_db)):
-    print("Checking out!")
-    #return crud.create_visit(db=db, visit=visit)
-
 @app.get("/members/", response_model=List[schemas.Member])
 def read_members(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     members = crud.get_members(db, skip=skip, limit=limit)
     return members
 
+@app.get("/visits/")
+def read_visits(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    visits = crud.get_visits(db, skip=skip, limit=limit)
+    return visits
+
+@app.get("/visit/{member_id}")
+def get_visit(member_id: int, db: Session = Depends(get_db)):
+    visit = crud.get_visit(db, member_id = member_id)
+    if visit is None:
+        raise HTTPException(status_code=404, detail="Member not visiting")
+    return visit
 
 @app.get("/members/{member_id}", response_model=schemas.Member)
 def read_member(member_id: int, db: Session = Depends(get_db)):
@@ -80,3 +79,10 @@ def read_member(member_id: int, db: Session = Depends(get_db)):
     if db_member is None:
         raise HTTPException(status_code=404, detail="Member not found")
     return db_member
+
+
+@app.post("/checkout/")
+def checkout_visit(visit: schemas.Checkout, db: Session = Depends(get_db)):
+    print("Checking out!")
+    print(visit.member_id)
+    return crud.checkout_visit(db=db, member_id=visit.member_id)
