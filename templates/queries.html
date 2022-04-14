@@ -1,0 +1,92 @@
+<head>
+    </head>
+    <body>
+        {% include "header.html" %}
+    
+        <h3>Historic Visits</h3>
+        <table>
+                <tr>
+                    <th>Visit #</th>
+                    <th>Member ID</th>
+                    <th>Name</th>
+                    <th>Time In</th>
+                    <th>Time Out</th>
+                </tr>
+                {% for item in hst %}
+                <tr>
+                    <td>{{item[0]}}</td>
+                    <td>{{item[1]}}</td>
+                    <td>{{item[2]}}</td>
+                    <td>{{item[3]}}</td>
+                    <td>{{item[4]}}</td>
+                </tr>
+                {% endfor %}
+            </table>
+
+
+
+        <hr>
+        <h3>Pricing</h3>
+        <h4>Punch card: 10 visits for $50 (Does not expire)</h4>
+        <h4>Membership Rates:</h4>
+        <table>
+            <tr>
+                <th></th>
+                <th>Individual</th>
+                <th>Students & Seniors</th>
+                <th>Group of 2 (Each)</th>
+                <th>Group of 3 (Each)</th>
+                <th>Group of 4 (Each)</th>
+            </tr>
+            <tr>
+                <td>1 Day</td>
+                <td>$10</td>
+                <td>$10</td>
+                <td>x</td>
+                <td>x</td>
+                <td>x</td>
+            </tr>
+            <tr>
+                <td>1 Month</td>
+                <td>$43</td>
+                <td>$35</td>
+                <td>$35</td>
+                <td>$32</td>
+                <td>$29</td>
+            </tr>
+            <tr>
+                <td>6 Weeks</td>
+                <td>$60</td>
+                <td>$53</td>
+                <td>x</td>
+                <td>x</td>
+                <td>x</td>
+                
+            </tr>
+            <tr>
+                <td>3 Months</td>
+                <td>$110</td>
+                <td>$90</td>
+                <td>$90</td>
+                <td>$85</td>
+                <td>$80</td>
+            </tr>
+            <tr>
+                <td>6 Months</td>
+                <td>$190</td>
+                <td>$170</td>
+                <td>$170</td>
+                <td>$160</td>
+                <td>$150</td>
+            </tr>
+            <tr>
+                <td>1 Year</td>
+                <td>$350</td>
+                <td>$325</td>
+                <td>$325</td>
+                <td>$305</td>
+                <td>$295</td>
+            </tr>
+    
+        </table>
+    </body>

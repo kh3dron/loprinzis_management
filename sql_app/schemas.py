@@ -6,8 +6,8 @@ from pydantic import BaseModel
 class MemberBase(BaseModel):
     name: str
     address: str
-#    membership_expiration: date
     remaining_punches: int
+    mem_expiration: int
 
 
 class MemberCreate(MemberBase):
@@ -32,3 +32,26 @@ class VisitCreate(VisitBase):
 
 class Checkout(BaseModel):
     member_id: int
+    timeout: int
+
+class PunchUpdate(BaseModel):
+    member_id: int
+    punches: int
+
+class NameUpdate(BaseModel):
+    member_id: int
+    name: str
+
+class AddressUpdate(BaseModel):
+    member_id: int
+    address: str
+
+class MembershipUpdate(BaseModel):
+    member_id: int
+    date: int
+
+class DateVisits(BaseModel):
+    date: str
+
+class MemberLookup(BaseModel):
+    name: str

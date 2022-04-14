@@ -1,22 +1,90 @@
 <html>
+
 <body>
     {% include "header.html" %}
-    
+
 
     <h3>New Member Registration</h3>
     <form id=form1>
-        <label for="name">First name:</label><br>
+        <label for="name">Name:</label><br>
         <input type="text" id="name" name="name"><br>
         <label for="name">Address:</label><br>
         <input type="text" id="address" name="address"><br>
-        <!--
-            <label for="name">Membership Expiration:</label><br>
-            <input type="text" id="membership_epiration" name="membership_expiration"><br>
-        -->
-        <label for="name">Punches:</label><br>
-        <input type="text" id="remaining_punches" name="remaining_punches"><br>
+
+        <label for="term">Membership Duration:</label><br>
+        <select id="expiration" name="Expiration">
+            <option value="pn">Punch Card</option>
+            <option value=86400>1 Day</option>
+            <option value=2678400>1 Month</option>
+            <option value=3628800>6 Weeks</option>
+            <option value=7776000>3 Months</option>
+            <option value=15552000>6 Months</option>
+            <option value=31557600>1 Year</option>
+        </select>
+
     </form>
     <button form="form1" type="sumbit" onclick="create_member()">Register</button>
     <h3 id="result"></h3>
+
+
+    <hr>
+    <br>
+    <h3>Edit an Existing Member</h3>
+    <form id="memsearch">
+        <label for="mname">Existing Member Name:</label><br>
+        <div class="autocomplete" style="width:300px;">
+            <input type="text" id="mname" name="mname"><br>
+        </div>
+    </form>
+    <button form="checkin" type="sumbit" onclick="edit_member()">Look up</button>
+    <script>
+        autocomplete(document.getElementById("mname"), {{mems | safe}});
+    </script>
+
+    {% if sm | length %}
+        <div>Checkem</div>
+    {% endif %}
+    <br>
+    <br>
+    <table>
+        <tr>
+            <td>Member ID</td>
+            <td>Name</td>
+            <td>Address</td>
+            <td>Punches</td>
+            <td>Membership Expiration</td>
+        </tr>
+        <tr>
+            {% for e in selected_mem %}
+            <td>{{e}}</td>
+            {% endfor %}
+        </tr>
+    </table>
+
+    <form id=updateName>
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" placeholder={{selected_mem[1]}}>
+        <button type="submit" onclick="update_name({{selected_mem[0]}})">Update</button>
+
+    </form>
+    <form id=updateAddress>
+        <label for="name">Address:</label><br>
+        <input type="text" id="address" name="address" placeholder={{selected_mem[2]}}>
+        <button type="submit" onclick="update_address({{selected_mem[0]}})">Update</button>
+    </form>
+    <form id=updatePunches>
+        <label for="name">Remaining Punches:</label><br>
+        <input type="number" min=0 id="punches" name="punches" placeholder="{{selected_mem[3]}}">
+        <button type="submit" onclick="update_punches({{selected_mem[0]}})">Update</button>
+    </form>
+    <form id=updateMembership>
+        <label for="name">Membership Expiration:</label><br>
+        <input type="date" id="expiration" name="expiration" placeholder={{selected_mem[4]}}>
+        <button type="submit" onclick="update_membership({{selected_mem[0]}})">Update</button>
+    </form>
+    </form>
+
+
 </body>
+
 </html>

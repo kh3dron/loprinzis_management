@@ -1,3 +1,5 @@
+<head>
+</head>
 <body>
     {% include "header.html" %}
 
@@ -5,28 +7,62 @@
 
     <form id=checkin>
         <label for="name">Member Name:</label><br>
+        <div class="autocomplete" style="width:300px;">
         <input type="text" id="name" name="name"><br>
+        </div>
     </form>
     <button form="checkin" type="sumbit" onclick="checkin_member()">Check in</button>
+    <div id=result></div> 
+
+<script>
+    autocomplete(document.getElementById("name"), {{mems|safe}});
+</script>
 
     <hr>
     <h3>Currently Checked In: </h3>
 
-    <ul id="navigation">
-            {% for item in curSTR %}
-                <li><button onclick="checkout_member('{{curOBJ[loop.index-1][1]}}')">Check Out</button>{{item}}</li>
-                <li>{{curOBJ[loop.index-1][1]}}</li>
-            {% endfor %}
-    </ul>
-
-    <hr>
-    <h3>Today's History: </h3>
-
-    <ul id="navigation">
-        {% for item in hstSTR %}
-        <li>{{item}}</li>
+    <table>
+        <tr>
+            <th>Visit #</th>
+            <th>Member ID</th>
+            <th>Member Name</th>
+            <th>Time In</th>
+            <th>Check Out</th>
+        </tr>
+        {% for e in curOBJ %}
+        <tr>
+            <td>{{e[0]}}</td>
+            <td>{{e[1]}}</td>
+            <td>{{e[2]}}</td>
+            <td>{{e[3]}}</td>
+            <form>
+            <td><button type="submit" onclick="checkout_member('{{curOBJ[loop.index-1][1]}}')">Check Out</button></td>
+            </form>
+        </tr>
         {% endfor %}
-    </ul>
+    </table>
+    <hr>
+
+    <h3>History for  <script> document.write(new Date().toLocaleDateString()); </script></h3>
+    <p>Showing {{hstOBJ | length}} Visits</p>
+    <table>
+        <tr>
+            <th>Visit #</th>
+            <th>Member ID</th>
+            <th>Name</th>
+            <th>Time In</th>
+            <th>Time Out</th>
+        </tr>
+        {% for item in hstOBJ %}
+        <tr>
+            <td>{{item[0]}}</td>
+            <td>{{item[1]}}</td>
+            <td>{{item[2]}}</td>
+            <td>{{item[3]}}</td>
+            <td>{{item[4]}}</td>
+        </tr>
+        {% endfor %}
+    </table>
 
 
 </body>

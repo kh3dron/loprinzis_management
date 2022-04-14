@@ -1,53 +1,28 @@
 <html>
-<script>
-    // Example POST method implementation:
-    async function postData(url = '', data = {}) {
-        // Default options are marked with *
-        const response = await fetch(url, {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-                'Content-Type': 'application/json'
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-            body: JSON.stringify(data) // body data type must match "Content-Type" header
-        });
-        return response.json(); // parses JSON response into native JavaScript objects
-    }
-
-    function create_member() {
-
-        var elements = document.getElementById("form1").elements;
-        var obj = {};
-        obj["id"] = 1;
-        for (var i = 0; i < elements.length - 1; i++) {
-            var item = elements.item(i);
-            obj[item.name] = item.value;
-        }
-        obj["remaining_punches"] = parseInt(obj["remaining_punches"]);
-
-        postData("/create_member/", obj)
-            .then(data => {
-                console.log(data)
-            })
-
-    }
-</script>
 
 <body>
     {% include "header.html" %}
 
     <h3>List of Members</h3>
 
-    <ul id="navigation">
-            {% for item in members %}
-                <li>{{item}}</li>
-            {% endfor %}
-    </ul>
+    <table id="listmembers">
+        <tr>
+            <th>Member ID</th>
+            <th>Member Name</th>
+            <th>Address</th>
+            <th>Punches Remaining</th>
+            <th>Membership Expiration</th>
+        </tr>
+        {% for m in members %}
+        <tr>
+            <td>{{m[0]}}</td>
+            <td>{{m[1]}}</td>
+            <td>{{m[2]}}</td>
+            <td>{{m[3]}}</td>
+            <td>{{m[4]}}</td>
+        </tr>
+        {% endfor %}
+    </table>
 
 </body>
 
