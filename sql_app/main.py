@@ -13,14 +13,15 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import json
 from datetime import date
-
-models.Base.metadata.create_all(bind=engine)
-app = FastAPI()
-templates = Jinja2Templates(directory="templates")
+import uvicorn
 
 from . import loggerconfig
-log = loggerconfig.structlog.get_logger("named logger")
-log.info("loaded", meta={"sample":"text"})
+log = loggerconfig.structlog.get_logger("AAAAAAAAAAAA")
+log.critical("loaded", meta={"sample":"text", "nest":{"key":"value"}})
+
+models.Base.metadata.create_all(bind=engine)
+app = FastAPI() #overwrite logger here
+templates = Jinja2Templates(directory="templates")
 
 # Dependency
 def get_db():
@@ -32,7 +33,7 @@ def get_db():
 
 @app.get("/", response_class=HTMLResponse)
 async def sample(request: Request, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    log.info("loadaed main page", var1="fish", meta={"a meta":"dictionary"})  
+    log.critical("loadaed main page", var1="fish", meta={"a meta":"dictionary"})  
     members = crud.get_members(db, skip=skip)
     members = [e.aslist() for e in members]
     return templates.TemplateResponse("./welcome.html", {"request": request, "members":members})

@@ -1,7 +1,7 @@
 # loprinzis_management
 automation for gym member checkin
 run with:
-  uvicorn sql_app.main:app --reload
+  ./run.sh
 # CHANGELOG
 
 ## [0.0]
@@ -66,12 +66,11 @@ run with:
 - add nested dictionaries for meta tags 
 
 *Todo*
-- abstract into seperate file callable with minimal lines
 - pull uvicorn / fastapi logging into structlog logger - should be catching everything
 - add to main:
-  - level
   - logger name
-  - line number
+  - traceID, spanID (for sumologic)
+- defend 
 
 [todo] 
 - member directory: 
